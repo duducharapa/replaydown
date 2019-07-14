@@ -1,0 +1,23 @@
+{
+  "name": "replaydown",
+  "version": "1.0.0",
+  "description": "ReplayDown! API que analisa replays de partidas realizadas no simulador Pokémon Showdown",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon -r esm server.js",
+    "build": "tsc --build tsconfig.json"
+  },
+  "author": "Eduardo Pereira Charapa Alves",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1",
+    "request": "^2.88.0",
+    "request-promise": "^4.2.4"
+  },
+  "devDependencies": {
+    "typescript": "^3.5.3"
+  }
+}

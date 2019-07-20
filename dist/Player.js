@@ -1,18 +1,16 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 var Player = /** @class */ (function () {
-    // Construtor
     function Player(name) {
         this._name = name;
         this._score = 0;
         this._team = [];
     }
     Object.defineProperty(Player.prototype, "score", {
-        // Getters
+        /*  GETTERS  */
         get: function () {
             return this._score;
         },
-        // Setters
         set: function (score) {
             this._score = score;
         },
@@ -33,7 +31,7 @@ var Player = /** @class */ (function () {
         enumerable: true,
         configurable: true
     });
-    // Métodos
+    /*  MÉTODOS  */
     Player.prototype.includePoke = function (pokemon) {
         this._team.push(pokemon);
     };

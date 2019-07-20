@@ -1,31 +1,42 @@
+/*  IMPORTS DE PACOTES TERCEIROS  */
 import Express from 'express';
-import Player from './dist/Player';
-import Game from './dist/Game';
-import rp from 'request-promise';
 
+/*  ROTAS   */
+import Winner from './src/routes/Winner';
+import Log from './src/routes/Log';
+import All from './src/routes/All';
+import Teams from './src/routes/Teams';
+import Players from './src/routes/Players';
+import Format from './src/routes/Format';
+import WinMode from './src/routes/WinMode';
+import Scores from './src/routes/Scores';
+
+/*  CONSTANTES    */
 const app = Express();
 
-app.get('/:replay',(req,res) => {
-    // Construção da string real do replay
-    const url = 'https://replay.pokemonshowdown.com/' + req.params.replay + '.json';
+/*  ROTA QUE RETORNA TODAS AS INFORMAÇÕES DA BATALHA */
+app.get('/all/:replay',All);
 
-    rp(url)
-     .then(html => JSON.parse(html) )
-     .then(json => {
+/*  ROTA QUE RETORNA O LOG DE UM REPLAY    */
+app.get('/log/:replay',Log);
 
-        let game = new Game(json.log.split('\n'),json.format);
-        let p1 = new Player(json.p1), p2 = new Player(json.p2);
+/*  ROTA QUE RETORNA O VENCEDOR DA BATALHA    */
+app.get('/winner/:replay',Winner);
 
-        game.setTeams(p1,p2);
-        game.setScores(p1,p2);
-        game.setWinMode(p1,p2);
+/*  ROTA QUE RETORNA AS EQUIPES DOS JOGADORES  */
+app.get('/teams/:replay',Teams);
 
-        // Retorna JSON com as informações relevantes
-        return game.exportInfo(p1,p2);
-    })
-     .then(json => res.send(json) )
-     .catch( err => console.log("Erro: " + err ) );
-});
+/*  ROTA QUE RETORNA O NOME DOS JOGADORES  */
+app.get('/players/:replay',Players);
+
+/*  ROTA QUE RETORNA O FORMATO DA PARTIDA  */
+app.get('/format/:replay',Format);
+
+/*  ROTA QUE RETORNA O MODO DE VITÓRIA DA PARTIDA  */
+app.get('/winmode/:replay',WinMode);
+
+/*  ROTA QUE RETORNA SCORES DOS JOGADORES  */
+app.get('/scores/:replay',Scores);
 
 app.use( (req,res) => res.status(404).send('Route not found') );
 

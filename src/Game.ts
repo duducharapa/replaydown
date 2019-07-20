@@ -2,7 +2,6 @@ import Player from "./Player";
 
 class Game {
   
-  // Propriedades
   private _winner: string;
   private _winMode: string;
   private _logs: string[];
@@ -11,41 +10,55 @@ class Game {
   private readonly EXP_TEAM:RegExp = /^\|poke\|p.\|/;
   private readonly EXP_FAINT:RegExp = /^\|faint\|p.{2}/;
 
-  // Construtor
-  public constructor(logs: string[], format: string){
+
+  public constructor(logs: string[], format: string) {
     this._winner = '';
     this._winMode = '';
     this._logs = logs;
     this._format = format;
   }
 
-  // Getters
-  public get winner():string{
+
+  /*  GETTERS  */
+  public get winner():string {
     return this._winner;
   }
 
-  public get winMode():string{
+
+  public get winMode():string {
     return this._winMode;
   }
+
   
-  public get format():string{
+  public get format():string {
     return this._format;
   }
+
   
-  public get logs():string[]{
+  public get logs():string[] {
     return this._logs;
   }
 
-  // Setters
-  public setWinMode(p1:Player, p2:Player){
+
+  /*  SETTERS  */
+  public setWinMode(p1:Player, p2:Player) {
     this._winMode = this.analyzeWinMode(p1,p2);
   }
 
-  public analyzeWinMode(p1:Player,p2:Player):string{
+
+  public setWinner(p1:Player,p2:Player) {
+    this.analyzeWinMode(p1,p2);
+  }
+
+
+  /*  MÉTODOS  */
+  public analyzeWinMode(p1:Player,p2:Player):string {
     let returnval = '';
     
     this._logs.map(log => {
+      
       if( this.EXP_REASON.test(log) ){
+        
         if( log.indexOf('forfeit') !== -1 ){
           this._winner = log.indexOf(p1.name) !== -1 ? p2.name : p1.name;
           returnval = 'Forfeit';
@@ -62,7 +75,7 @@ class Game {
       }
 
       if( this._winner === '' ){
-        this.setWinner(p1,p2);
+        this._winner = p1.score > p2.score ? p1.name : p2.name;
         returnval = 'K.O';
       }
 
@@ -70,13 +83,9 @@ class Game {
 
     return returnval;
   }
-  
-  public setWinner(p1:Player,p2:Player){
-    this._winner = p1.score > p2.score ? p1.name : p2.name;
-  }
 
-  // Métodos
-  public setTeams(p1:Player, p2:Player){
+
+  public setTeams(p1:Player, p2:Player) {
     this._logs.map(log => {
       
       if( this.EXP_TEAM.test(log) ){
@@ -99,7 +108,10 @@ class Game {
     });
   }
 
-  public setScores(p1:Player, p2:Player){
+
+  public setScores(p1:Player, p2:Player) {
+    this.setTeams(p1,p2);
+    
     this._logs.map(log => {
       
       if( this.EXP_FAINT.test(log) ){
@@ -113,15 +125,62 @@ class Game {
       }
 
     });
+
+    this.analyzeWinMode(p1,p2);
+
   }
 
-  public exportInfo(p1:Player, p2:Player):object{
+
+  /*  MÉTODOS DE EXPORT */
+  public exportInfo(p1:Player, p2:Player):object {
     return {
       "p1": p1.name, "p1team": p1.team, "p1score": p1.score,
       "p2": p2.name, "p2team": p2.team, "p2score": p2.score,
       "tier": this.format, "winner": this.winner, "winmode": this.winMode
     }
   }
+
+
+  public export(p1:Player, p2:Player, props:string[]):object {
+    let returnvar = {};
+
+    props.map(prop => {
+      
+      switch(prop){
+        case 'teams':
+          returnvar["p1team"] = p1.team;
+          returnvar["p2team"] = p2.team;
+          break;
+        
+        case 'players':
+          returnvar["p1"] = p1.name;
+          returnvar["p2"] = p2.name;
+          break;
+        
+        case 'winner':
+          returnvar["winner"] = this.winner;
+          break;
+        
+        case 'winmode':
+          returnvar["winmode"] = this.winMode;
+          break;
+
+        case 'format':
+          returnvar["format"] = this.format;
+          break;
+
+        case 'scores':
+          returnvar["p1score"] = p1.score;
+          returnvar["p2score"] = p2.score;
+          break;
+      }
+
+    });
+
+    return returnvar;
+
+  }
+
 
 }
 

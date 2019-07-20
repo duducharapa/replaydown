@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "start": "nodemon -r esm server.js",
-    "build": "tsc --build tsconfig.json"
+    "build": "tsc --build tsconfig.json",
+    "dev": "tsc --build tsconfig.json && nodemon -r esm server.js"
   },
   "author": "Eduardo Pereira Charapa Alves",
   "license": "ISC",

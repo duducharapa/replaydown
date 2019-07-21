@@ -44,4 +44,4 @@ app.get('/teste/:replay',Teste);
 
 app.use( (req,res) => res.status(404).send('Route not found') );
 
-app.listen(3000, () => console.log('App iniciado na porta 3000') );
+app.listen(80, () => console.log('App iniciado na porta 3000') );

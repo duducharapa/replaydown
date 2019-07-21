@@ -17,6 +17,7 @@ app.get('/log/:replay',(req,res) => {
   const url = utilities.constructUrl(replay,'log');
 
   rp(url)
+    
     /*  SIMPLESMENTE TRANSFORMA EM JSON E PARTE A STRING PARA MELHOR VISUALIZAÇÃO */
     .then(html => res.send(JSON.stringify(html).split('\\n')) )
     

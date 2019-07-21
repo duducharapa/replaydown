@@ -20,11 +20,11 @@ app.get('/players/:replay',(req,res) => {
     .then(html => JSON.parse(html) )
     
     .then(json => {
-      let logs = json.log.split('\n');
-      let game = new Game(logs,json.format);
-      let p1 = new Player(json.p1), p2 = new Player(json.p2);
-
-      res.send(game.export(p1,p2,['players']));
+      
+      res.json({
+        p1: json.p1,
+        p2: json.p2
+      });
 
     })
     

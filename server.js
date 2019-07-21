@@ -11,6 +11,8 @@ import Format from './src/routes/Format';
 import WinMode from './src/routes/WinMode';
 import Scores from './src/routes/Scores';
 
+import Teste from './src/routes/Teste';
+
 /*  CONSTANTES    */
 const app = Express();
 
@@ -37,6 +39,8 @@ app.get('/winmode/:replay',WinMode);
 
 /*  ROTA QUE RETORNA SCORES DOS JOGADORES  */
 app.get('/scores/:replay',Scores);
+
+app.get('/teste/:replay',Teste);
 
 app.use( (req,res) => res.status(404).send('Route not found') );
 
